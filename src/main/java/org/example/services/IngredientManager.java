@@ -10,6 +10,7 @@ public class IngredientManager {
     public static HashMap<Integer, String> typeTwo = new HashMap<>();
     public static HashMap<Integer, String> typeThree = new HashMap<>();
     public static HashMap<Integer, Ingredient> ingredientsList;
+    public static int i=1;
 
     public static void getIngredientsList() {
         ingredientsList = IngredientManager.collect();
@@ -24,7 +25,7 @@ public class IngredientManager {
         return ingredientsList;
     }
 
-    public static void order(int i, Ingredient ingredient){
+    public static void order(Ingredient ingredient){
         if (ingredient.getType() == 1){
             typeOne.put(i, ingredient.getName());
         } else if (ingredient.getType() == 2) {
@@ -32,6 +33,7 @@ public class IngredientManager {
         } else if (ingredient.getType() == 3) {
             typeThree.put(i, ingredient.getName());
         }
+        i++;
     }
 
     public static Ingredient getByNumber(int ingredientNumber) {
