@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.models.Breed;
 import org.example.models.Ingredient;
-import org.example.models.JSONManager;
 import org.example.services.IngredientManager;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Scanner;
 
@@ -18,7 +16,7 @@ public class Main {
         System.out.println(IngredientManager.ingredientsList);
         //String input = new Scanner(System.in).nextLine();
         //String[] parts = input.split(",");
-        String[] parts = "1, 2, 3,4,5,6,7,8,9,1,2,3,12".split(",");
+        String[] parts = "1, 2, 3,4,5,6,7,8,9,1,1,2,3,12".split(",");
 
         for (int k = 0; k < parts.length; k++) {
             String s = parts[k];
@@ -36,11 +34,7 @@ public class Main {
             IngredientManager.order(ingredient);
         }
         breed.bunning();
-        System.out.println(
-                jsonnier(
-                        new JSONObject(breed.jsonLike).toString()
-                )
-        );
+        System.out.println(jsonnier(breed.jsonLike));
     }
 
     public static String jsonnier(String uglyJson) throws JsonProcessingException {

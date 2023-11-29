@@ -2,10 +2,12 @@ package org.example.models;
 
 import org.example.services.IngredientManager;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Breed {
-    public JSONObject json = new JSONObject();
     public String jsonLike = "{";
 
     public String[] fixString(String typedIngredients) {
@@ -21,15 +23,12 @@ public class Breed {
     private void fill(int start, String typedIngredients) throws JSONException {
         String[] parts = fixString(typedIngredients);
         int i = start;
-        if (!this.json.has("buns")) {
-            this.json.put("buns", new JSONObject());
-        }
         String buns = "";
         for (String name : parts) {
             if (!name.isEmpty()) {
                 buns += "\""
                         + (++i)
-                        + "\" : \""
+                        + "\": \""
                         + name
                         + "\", ";
             }
@@ -37,18 +36,27 @@ public class Breed {
         this.jsonLike += buns;
     }
 
+    private String sortByValue(HashMap<Integer, String> map){
+        return map.entrySet().stream()
+                .sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.joining (","));
+    }
     public void bunning() {
+        this.jsonLike = "{ \"buns\": {";
         try {
-            fill(0,IngredientManager.typeOne.values().toString());
+
+            fill(0,sortByValue(IngredientManager.typeOne));
             fill(
                     IngredientManager.typeOne.values().size(),
-                    IngredientManager.typeTwo.values().toString()
+                    sortByValue(IngredientManager.typeTwo)
             );
             fill(
                     IngredientManager.typeOne.values().size() + IngredientManager.typeTwo.values().size(),
-                    IngredientManager.typeThree.values().toString()
+                    sortByValue(IngredientManager.typeThree)
             );
         } catch(Exception ignored){}
-        this.jsonLike = this.jsonLike.substring(0, this.jsonLike.length()-2) + "}";
+        this.jsonLike = this.jsonLike.substring(0, this.jsonLike.length()-2);
+        this.jsonLike += "}}";
     }
 }
